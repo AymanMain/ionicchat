@@ -24,6 +24,7 @@ function load(): ChatMessage[] {
     }
 }
 
+// save messages to localStorage
 function save(msgs: ChatMessage[]): void {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
 }
