@@ -1,53 +1,46 @@
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+import React, { FC } from "react";
+import {
+  IonApp,
+  IonContent,
+  IonPage,
+  setupIonicReact,
+} from "@ionic/react";
 
-/* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
+import ChatHeader from "./components/ChatHeader";
+import MessageList from "./components/MessageList";
+import MessageInput from "./components/MessageInput";
+import { useMessages } from "./hooks/useMessages";
+import { Contact } from "./types/chat";
 
-/* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
+import "./theme/variables.css";
+import "@ionic/react/css/core.css";
+import "@ionic/react/css/normalize.css";
+import "@ionic/react/css/structure.css";
+import "@ionic/react/css/typography.css";
 
-/* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
+setupIonicReact({ mode: "md" });
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+const contact: Contact = { name: "Jane Doe", online: true };
 
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
+const App: FC = () => {
+  const { messages, addMessage, deleteMessage } = useMessages(contact.name);
 
-/* Theme variables */
-import './theme/variables.css';
+  return (
+    <IonApp>
+      <IonPage>
+        <ChatHeader contact={contact} />
 
-setupIonicReact();
+        <IonContent
+          style={{ "--background": "#e5ddd5" }}
+          scrollEvents={true}
+        >
+          <MessageList messages={messages} onDelete={deleteMessage} />
+        </IonContent>
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
-);
+        <MessageInput onSend={addMessage} />
+      </IonPage>
+    </IonApp>
+  );
+};
 
 export default App;
