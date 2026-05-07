@@ -34,13 +34,13 @@ export function useNotifications(): void {
       importance: 4,
       vibration: true,
     }).catch(() => {
-      // createChannel only works on Android; ignore on other platforms
+
     });
 
     const listener = LocalNotifications.addListener(
       "localNotificationActionPerformed",
       () => {
-        // handle tap — navigate to chat if needed
+
       }
     );
 
